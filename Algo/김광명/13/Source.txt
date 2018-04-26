@@ -1,0 +1,22 @@
+void Prom_13()
+{
+	std::stack<char> Good;
+	int Target = 132;
+
+	while (Target >= 1) {
+		if (Target % 2 == 1) {
+			char temp = '1';
+			Good.push(temp);
+		}
+		else {
+			char temp = '0';
+			Good.push(temp);
+		}
+		Target = Target / 2;
+	}
+
+	while (Good.size() != 0) {
+		std::cout << Good.top();
+		Good.pop();
+	}
+}

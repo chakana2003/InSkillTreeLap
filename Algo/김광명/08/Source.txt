@@ -1,0 +1,15 @@
+void Prom_8()
+{
+	// 큐 선언
+	DL_Queue Good;
+	// 1~10 푸쉬
+	for (int i = 1; i <= 10; ++i) {
+		Good.Push(i);
+	}
+	// 출력
+	for (int i = 1; i <= 10; ++i) {
+		std::cout << Good.Pop() << " ";
+	}
+	std::cout << std::endl;
+	std::cout << "출력 완료" << std::endl;
+}

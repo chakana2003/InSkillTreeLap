@@ -1,0 +1,45 @@
+void Prom_6()
+{
+	View_List Good;
+	char buffer[1024] = { 0 };
+	FILE* fp = fopen("data.txt", "r");
+	Line Temp;
+
+	while (!feof(fp)) {
+		fgets(buffer, 100, fp);
+		memcpy(Temp.Text, buffer, 100);
+		Good.AddTail(Temp);
+	}
+	
+	char InputKey;
+	int StartLine = 1;
+	int MaxLine = 100;
+	int i = 0;
+
+	do {         //  출력하는 방법
+		for (View_Node* Current = Good.IndexOf(StartLine); Current != Good.Tail; Current = Current->Next) {
+			i++;
+			printf("%s", Current->Text.Text);
+			if (i > 5) {
+				i = 0;
+				break;
+			}
+		}
+		InputKey = _getch();
+		if (InputKey == 'w') {
+			if (StartLine == 1) {
+
+			}
+			else {
+				--StartLine;
+			}
+		}
+		else if (InputKey == 's') {
+			++StartLine;
+		}
+		system("cls");
+	} while (InputKey != 'q');
+
+
+	fclose(fp);
+}

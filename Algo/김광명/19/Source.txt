@@ -1,0 +1,126 @@
+int mazeRange[20][20] = {
+	{ 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0 },
+{ 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0 },
+{ 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0 },
+{ 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0 },
+{ 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0 },
+{ 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0 },
+{ 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0 },
+{ 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1 },
+{ 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1 },
+{ 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1 },
+{ 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1 },
+{ 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1 },
+{ 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1 },
+{ 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1 },
+{ 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1 },
+{ 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1 },
+{ 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1 },
+{ 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0 },
+{ 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0 },
+{ 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0 }
+};
+
+void PrintMazeRange()
+{
+	system("cls");
+	for (int i = 0; i < 20; i++) {
+		for (int j = 0; j < 20; j++) {
+			if (mazeRange[i][j] == 1) {
+				printf("---");
+			}
+			else if (mazeRange[i][j] == 0) {
+				printf("000");
+			}
+			else if (mazeRange[i][j] == 3) {
+				printf("111");
+			}
+		}
+		printf("\n");
+	}
+}
+
+int FoundRange(Pos & Start, int count)
+{
+	if (mazeRange[Start.y][Start.x] == 1) {
+		mazeRange[Start.y][Start.x] = 3;
+		count++;
+		PrintMazeRange();
+		if (Start.y - 1 >= 0 && mazeRange[Start.y - 1][Start.x] == 1) {
+			Pos NewStart;
+			NewStart.x = Start.x;
+			NewStart.y = Start.y - 1;
+			count = FoundRange(NewStart, count);
+		}
+		if (Start.x + 1 < 20 && mazeRange[Start.y][Start.x + 1] == 1) {
+			Pos NewStart;
+			NewStart.x = Start.x + 1;
+			NewStart.y = Start.y;
+			count = FoundRange(NewStart, count);
+		}
+		if (Start.y + 1 < 20 && mazeRange[Start.y + 1][Start.x] == 1) {
+			Pos NewStart;
+			NewStart.x = Start.x;
+			NewStart.y = Start.y + 1;
+			count = FoundRange(NewStart, count);
+		}
+		if (Start.x - 1 >= 0 && mazeRange[Start.y][Start.x - 1] == 1) {
+			Pos NewStart;
+			NewStart.x = Start.x - 1;
+			NewStart.y = Start.y;
+			count = FoundRange(NewStart, count);
+		}
+		if (Start.x - 1 >= 0 && Start.y - 1 >= 0 && mazeRange[Start.y - 1][Start.x - 1] == 1) {
+			Pos NewStart;
+			NewStart.x = Start.x - 1;
+			NewStart.y = Start.y - 1;
+			count = FoundRange(NewStart, count);
+		}
+		if (Start.x - 1 >= 0 && Start.y + 1 < 20 && mazeRange[Start.y + 1][Start.x - 1] == 1) {
+			Pos NewStart;
+			NewStart.x = Start.x - 1;
+			NewStart.y = Start.y + 1;
+			count = FoundRange(NewStart, count);
+		}
+		if (Start.x + 1 < 20 && Start.y - 1 >= 0 && mazeRange[Start.y - 1][Start.x - 1] == 1) {
+			Pos NewStart;
+			NewStart.x = Start.x + 1;
+			NewStart.y = Start.y - 1;
+			count = FoundRange(NewStart, count);
+		}
+		if (Start.x + 1 < 20 && Start.y + 1 < 20 && mazeRange[Start.y + 1][Start.x + 1] == 1) {
+			Pos NewStart;
+			NewStart.x = Start.x + 1;
+			NewStart.y = Start.y + 1;
+			count = FoundRange(NewStart, count);
+		}
+	}
+	return count;
+}
+
+void Prom_19()
+{
+	bool good = true;
+	while (good) {
+		PrintMazeRange();
+		Pos Start;
+		std::cout << "X 좌표 : " << std::ends;
+		std::cin >> Start.x;
+
+		std::cout << "Y 좌표 : " << std::ends;
+		std::cin >> Start.y;
+
+		int count = FoundRange(Start, 0);
+		std::cout << "선택된 영역의 갯수는 " << count << "개 입니다" << std::endl;
+
+		int re;
+		std::cout << "다시?(1을 입력하면 다시 합니다)" << std::ends;
+		std::cin >> re;
+		if (re == 1) {
+			good = true;
+		}
+		else {
+			good = false;
+		}
+	}
+}

@@ -1,0 +1,12 @@
+void Prom_3()
+{
+	std::cout << "세번째 문제" << std::endl;
+	char* First_3 = new char;
+	std::cout << "문자열을 입력하세요" << std::endl;
+	std::cin >> First_3;  // 문자열을 입력받아 포인터에 저장
+	int length = 0;
+	while (First_3[length] != NULL) {
+		length++;
+	}
+	std::cout << "입력받은 문자열의 길이 : " << length << std::endl;
+}

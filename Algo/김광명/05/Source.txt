@@ -1,0 +1,9 @@
+void Prom_5()
+{
+	Double_List Good;
+	for (int i = 1; i <= 10; ++i) {
+		Good.AddTail(i);
+	}
+	Good.PrintFTail();
+	return;
+}

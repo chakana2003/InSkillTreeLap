@@ -1,0 +1,100 @@
+
+#define MAZESIZE 20
+int maze[MAZESIZE][MAZESIZE] = {
+	{ 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0 },
+{ 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0 },
+{ 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0 },
+{ 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0 },
+{ 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0 },
+{ 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0 },
+{ 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0 },
+{ 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1 },
+{ 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1 },
+{ 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1 },
+{ 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1 },
+{ 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1 },
+{ 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1 },
+{ 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1 },
+{ 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1 },
+{ 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1 },
+{ 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1 },
+{ 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0 },
+{ 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0 },
+{ 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0 }
+};
+
+void PrintMaze()
+{
+	system("cls");
+	for (int i = 0; i < MAZESIZE; i++) {
+		for (int j = 0; j < MAZESIZE; j++) {
+			if (maze[i][j] == 1) {
+				printf("---");
+			}
+			else if (maze[i][j] == 0) {
+				printf("000");
+			}
+			else {
+				printf("%d", maze[i][j]);
+			}
+		}
+		printf("\n");
+	}
+}
+
+int FoundRoute(Pos &Start, int Num)
+{
+	maze[Start.y][Start.x] = Num;
+	if (Start.y - 1 >= 0 && maze[Start.y - 1][Start.x] == 0) {
+		Pos NewStart;
+		NewStart.x = Start.x;
+		NewStart.y = Start.y - 1;
+		int NewNum = Num + 1;
+		PrintMaze();
+		//getchar();
+		FoundRoute(NewStart, NewNum);
+	}
+	if (Start.x + 1 < MAZESIZE && maze[Start.y][Start.x + 1] == 0) {
+		Pos NewStart;
+		NewStart.x = Start.x + 1;
+		NewStart.y = Start.y;
+		int NewNum = Num + 1;
+		PrintMaze();
+		//getchar();
+		FoundRoute(NewStart, NewNum);
+	}
+	if (Start.y + 1 < MAZESIZE && maze[Start.y + 1][Start.x] == 0) {
+		Pos NewStart;
+		NewStart.x = Start.x;
+		NewStart.y = Start.y + 1;
+		int NewNum = Num + 1;
+		PrintMaze();
+		//getchar();
+		FoundRoute(NewStart, NewNum);
+	}
+	if (Start.x - 1 >= 0 && maze[Start.y][Start.x - 1] == 0) {
+		Pos NewStart;
+		NewStart.x = Start.x - 1;
+		NewStart.y = Start.y;
+		int NewNum = Num + 1;
+		PrintMaze();
+		//getchar();
+		FoundRoute(NewStart, NewNum);
+	}
+	if (Start.x == 19 && Start.y == 19) {
+		return Num;
+	}
+}
+
+void Prom_17()
+{
+	std::stack<Pos*> Good;
+	Pos Start;
+	Start.x = 0;
+	Start.y = 0;
+
+	int num = 100;    // 순서를 세기 위함
+
+	num = FoundRoute(Start, num);
+
+}

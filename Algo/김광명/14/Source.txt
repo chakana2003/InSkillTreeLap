@@ -1,0 +1,31 @@
+int Searching(int arr[], int Target) {
+	int Length = 0;
+	for (int i = 0; arr[i] >= 0; ++i) {
+		Length = i;
+	}
+	if (Target == arr[Length / 2]) {
+		return (Length / 2) + 1;
+	}
+	else if (Target < arr[Length / 2]) {
+		for (int i = 0; i < Length / 2; ++i) {
+			if (arr[i] == Target) {
+				return i + 1;
+			}
+		}
+	}
+	else if(Target>arr[Length/2]){
+		for (int i = Length / 2; i < Length; ++i) {
+			if (arr[i] == Target) {
+				return i + 1;
+			}
+		}
+	}
+	return -1;
+}
+
+void Prom_14()
+{
+	int arr[10] = { 1,4,6,7,8,14,73,143,556,1000 };
+	std::cout << "배열 선언, 배열에는 1,4,6,7,8,14,73,143,556,1000 가 있습니다." << std::endl;
+	std::cout << "그 중 6은 " << Searching(arr, 6) << "번째에 있고, 143 은 " << Searching(arr, 143) << "번째에 있습니다." << std::endl;
+}

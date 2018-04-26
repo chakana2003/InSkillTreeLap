@@ -1,0 +1,45 @@
+void Prom_11()
+{
+	int maze[10][10] = {
+	{ 0,1,1,1,1,1,1,1,1,1 },
+	{ 0,1,1,1,0,0,0,0,0,1 },
+	{ 0,0,0,1,0,1,1,1,0,1 },
+	{ 1,1,0,1,0,1,0,1,0,1 },
+	{ 1,1,0,0,0,0,0,1,1,1 },
+	{ 1,1,1,1,0,1,0,1,1,1 },
+	{ 1,1,1,1,0,1,0,1,1,1 },
+	{ 1,1,1,1,0,0,0,0,0,1 },
+	{ 1,1,1,1,1,1,1,1,0,0 },
+	{ 1,1,1,1,1,1,1,1,1,0 }
+	};
+	std::stack<Pos*> Trace;
+
+	Pos Start;
+	Start.x = 0;
+	Start.y = 0;
+	maze[Start.y][Start.x] = 2;
+	Pos* Possible = Start.FindPossible(maze);
+
+	while (1) {
+		if (Possible==NULL) {
+			Possible = Trace.top();
+			Trace.pop();
+		}
+		else if (Possible->x == 9 && Possible->y == 9) {
+			break;
+		}
+		else{
+			maze[Possible->y][Possible->x] = 2;
+			Possible = Possible->FindPossible(maze);
+			Trace.push(Possible);
+		}
+	}
+	maze[Possible->y][Possible->x] = 2;
+
+	for (int i = 0; i < 10; ++i) {
+		for (int j = 0; j < 10; ++j) {
+			std::cout << maze[i][j] << " ";
+		}
+		std::cout << std::endl;
+	}
+}

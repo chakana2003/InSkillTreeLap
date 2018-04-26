@@ -1,0 +1,7 @@
+﻿  DoubleLinded.cpp
+c:\unreal\study\doublelinded\doublelinded\doublelinded.cpp(66): warning C4477: 'scanf' : 서식 문자열 '%d'에 'int *' 형식의 인수가 필요하지만 variadic 인수 1의 형식이 'int'입니다.
+c:\unreal\study\doublelinded\doublelinded\dllclass.h(93): warning C4477: 'printf' : 서식 문자열 '%d'에 'int' 형식의 인수가 필요하지만 variadic 인수 1의 형식이 'double'입니다.
+  c:\unreal\study\doublelinded\doublelinded\dllclass.h(89): note: 클래스 템플릿 멤버 함수 'void DLList<float>::PrintNodeFromHead(void)'을(를) 컴파일하고 있습니다.
+  c:\unreal\study\doublelinded\doublelinded\doublelinded.cpp(60): note: 컴파일 중인 함수 템플릿 인스턴스화 'void DLList<float>::PrintNodeFromHead(void)'에 대한 참조를 확인하십시오.
+  c:\unreal\study\doublelinded\doublelinded\doublelinded.cpp(53): note: 컴파일 중인 클래스 템플릿 인스턴스화 'DLList<float>'에 대한 참조를 확인하세요.
+  DoubleLinded.vcxproj -> C:\Unreal\Study\DoubleLinded\Debug\DoubleLinded.exe

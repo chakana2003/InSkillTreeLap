@@ -1,0 +1,229 @@
+#include "stdafx.h"
+#include "Problem_1.h"
+#include <iostream>
+#include <conio.h>
+
+void Prom_1_2()
+{
+	std::cout << "첫번째 문제" << std::endl;
+	int First[101];                    //  배열 선언
+	for (int i = 1; i <= 100; ++i) {    //  1 ~ 100까지 할당
+		First[i] = i;
+	}
+	std::cout << "배열 선언 밑 숫자넣기 완료" << std::endl;
+	std::cout << "두번재 문제" << std::endl;
+	for (int i = 1; i <= 100; ++i) {
+		std::cout << First[i] << " ";  // 배열 하나씩 출력
+	}
+	std::cout << std::endl;
+}
+
+void Prom_3()
+{
+	std::cout << "세번째 문제" << std::endl;
+	char* First_3 = new char;
+	std::cout << "문자열을 입력하세요" << std::endl;
+	std::cin >> First_3;  // 문자열을 입력받아 포인터에 저장
+	int length = 0;
+	while (First_3[length] != NULL) {
+		length++;
+	}
+	std::cout << "입력받은 문자열의 길이 : " << length << std::endl;
+}
+
+void Prom_4()
+{
+	Single_List Good;
+	for (int i = 1; i <= 10; ++i) {
+		Good.AddNode(i);
+	}
+	Good.PrintNodes();
+}
+
+void Prom_5()
+{
+	Double_List Good;
+	for (int i = 1; i <= 10; ++i) {
+		Good.AddTail(i);
+	}
+	Good.PrintFTail();
+	return;
+}
+
+void Prom_6()
+{
+	View_List Good;
+	char buffer[1024] = { 0 };
+	FILE* fp = fopen("data.txt", "r");
+	Line Temp;
+
+	while (!feof(fp)) {
+		fgets(buffer, 100, fp);
+		memcpy(Temp.Text, buffer, 100);
+		Good.AddTail(Temp);
+	}
+	
+	char InputKey;
+	int StartLine = 1;
+	int MaxLine = 100;
+	int i = 0;
+
+	do {         //  출력하는 방법
+		for (View_Node* Current = Good.IndexOf(StartLine); Current != Good.Tail; Current = Current->Next) {
+			i++;
+			printf("%s", Current->Text.Text);
+			if (i > 5) {
+				i = 0;
+				break;
+			}
+		}
+		InputKey = _getch();
+		if (InputKey == 'w') {
+			if (StartLine == 1) {
+
+			}
+			else {
+				--StartLine;
+			}
+		}
+		else if (InputKey == 's') {
+			++StartLine;
+		}
+		system("cls");
+	} while (InputKey != 'q');
+
+
+	fclose(fp);
+}
+
+Single_List::Single_List()
+{
+	Head = NULL;
+}
+
+void Single_List::AddNode(int NewValue)
+{
+	if (Head == NULL) {
+		Single_Node* NewNode = new Single_Node;
+		NewNode->Value = NewValue;
+		NewNode->Next = NULL;
+		Head = NewNode;
+		return;
+	}
+	Single_Node* Target = SearchEnd();
+	Single_Node* NewNode = new Single_Node;
+	NewNode->Value = NewValue;
+	NewNode->Next = NULL;
+	Target->Next = NewNode;
+}
+
+void Single_List::PrintNodes()
+{
+	Single_Node* Target = Head;
+	while (Target != NULL) {
+		std::cout << Target->Value << " ";
+		if (Target->Next != NULL) {
+			Target = Target->Next;
+		}
+		else {
+			break;
+		}
+	}
+	std::cout << std::endl;
+	std::cout << "출력 완료" << std::endl;
+}
+
+Single_Node * Single_List::SearchEnd()
+{
+	Single_Node* Target = Head;
+	while (Target->Next != NULL) {
+		Target = Target->Next;
+	}
+	return Target;
+}
+
+Double_List::Double_List()
+{
+	Head = new Double_Node;
+	Tail = new Double_Node;
+	Head->Value = 100000;
+	Head->Next = Tail;
+	Head->Prev = NULL;
+	Tail->Value = 100000;
+	Tail->Prev = Head;
+	Tail->Next = NULL;
+}
+
+void Double_List::AddTail(int NewValue)
+{
+	if (Head->Next == Tail) {
+		Double_Node* NewNode = new Double_Node;
+		NewNode->Value = NewValue;
+		NewNode->Prev = Head;
+		NewNode->Next = Tail;
+		Head->Next = NewNode;
+		Tail->Prev = NewNode;
+		return;
+	}
+	Double_Node* NewNode = new Double_Node;
+	NewNode->Value = NewValue;
+	NewNode->Next = Tail;
+	NewNode->Prev = Tail->Prev;
+	Tail->Prev = NewNode;
+}
+
+void Double_List::PrintFTail()
+{
+	if (Head->Next != Tail) {
+		Double_Node* Target = Tail->Prev;
+		while (Target != Head) {
+			std::cout << Target->Value << " ";
+			Target = Target->Prev;
+		}
+		std::cout << std::endl;
+		std::cout << "출력 완료" << std::endl;
+	}
+}
+
+View_List::View_List()
+{
+	Head = new View_Node;
+	Tail = new View_Node;
+	Head->Next = Tail;
+	Head->Prev = NULL;
+	Tail->Prev = Head;
+	Tail->Next = NULL;
+	Count = 0;
+}
+
+void View_List::AddTail(Line NewText)
+{
+	if (Head->Next == Tail) {
+		View_Node* NewNode = new View_Node;
+		NewNode->Text = NewText;
+		NewNode->Prev = Head;
+		NewNode->Next = Tail;
+		Head->Next = NewNode;
+		Tail->Prev = NewNode;
+		Count++;
+		return;
+	}
+	View_Node* NewNode = new View_Node;
+	NewNode->Text = NewText;
+	NewNode->Next = Tail;
+	NewNode->Prev = Tail->Prev;
+	Tail->Prev = NewNode;
+	Count++;
+}
+
+View_Node * View_List::IndexOf(int Index)
+{
+	long ObjectCount = 0;
+	for (View_Node* Current = Head; Current != Tail; Current = Current->Next) {
+		if ((ObjectCount == Index) && (Index != 0) && (Index < Count)) {
+			return Current;
+		}
+		ObjectCount++;
+	}
+	return NULL;
+}

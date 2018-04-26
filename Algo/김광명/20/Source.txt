@@ -1,0 +1,25 @@
+void Prom_20()
+{
+	BTree TestTree(1);
+
+	TestTree.Root->MakeLeftChild(2);
+	TestTree.Root->MakeRightChild(3);
+	TestTree.Root->Left->MakeLeftChild(4);
+	TestTree.Root->Left->MakeRightChild(5);
+	TestTree.Root->Right->MakeRightChild(6);
+	TestTree.Root->Left->Left->MakeLeftChild(7);
+	TestTree.Root->Left->Right->MakeLeftChild(8);
+	TestTree.Root->Right->Right->MakeLeftChild(9);
+	TestTree.Root->Right->Right->MakeRightChild(10);
+	TestTree.Root->Left->Right->Left->MakeLeftChild(11);
+	TestTree.Root->Left->Right->Left->MakeRightChild(12);
+
+	std::cout << "Preorder Å½»ö" << std::endl;
+	TestTree.PreorderSearch(TestTree.Root);
+	std::cout << std::endl;
+	std::cout << "Inorder Å½»ö" << std::endl;
+	TestTree.InorderSearch(TestTree.Root);
+	std::cout << std::endl;
+	std::cout <<"Postorder Å½»ö"<<std::endl;
+	TestTree.PostorderSearch(TestTree.Root);
+}

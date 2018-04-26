@@ -1,0 +1,11 @@
+int RecursiveSum(int a) {
+	if (a == 1) {
+		return 1;
+	}
+	return a + RecursiveSum(a - 1);
+}
+
+void Prom_15()
+{
+	std::cout << "10부터 1까지의 합은 " << RecursiveSum(10) << "이다" << std::endl;
+}

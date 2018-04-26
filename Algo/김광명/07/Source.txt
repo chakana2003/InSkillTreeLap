@@ -1,0 +1,15 @@
+void Prom_7()
+{
+	// 스택 선언
+	DL_Stack Good;
+	// 1~10까지 넣기(Push)
+	for (int i = 1; i <= 10; ++i) {
+		Good.Push(i);
+	}
+	// Pop 하며 출력(알아서 거꾸로 출력됨)
+	for (int i = 1; i <= 10; ++i) {
+		std::cout << Good.Pop() << " ";
+	}
+	std::cout << std::endl;
+	std::cout << "출력 완료" << std::endl;
+}

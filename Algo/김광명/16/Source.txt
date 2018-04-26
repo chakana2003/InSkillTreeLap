@@ -1,0 +1,10 @@
+int RecursiveStringLength(std::string str, int Length) {
+	if (str[Length] == NULL) {
+		return 0;
+	}
+	return 1 + RecursiveStringLength(str, Length + 1);
+}
+
+void Prom_16() {
+	std::cout << "문자열 StrongAndGoodMorning! 의 길이는 " << RecursiveStringLength("StrongAndGoodMorning!", 0) << "입니다." << std::endl;
+}

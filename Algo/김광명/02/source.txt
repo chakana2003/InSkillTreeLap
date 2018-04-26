@@ -1,0 +1,14 @@
+void Prom_1_2()
+{
+	std::cout << "첫번째 문제" << std::endl;
+	int First[101];                    //  배열 선언
+	for (int i = 1; i <= 100; ++i) {    //  1 ~ 100까지 할당
+		First[i] = i;
+	}
+	std::cout << "배열 선언 밑 숫자넣기 완료" << std::endl;
+	std::cout << "두번재 문제" << std::endl;
+	for (int i = 1; i <= 100; ++i) {
+		std::cout << First[i] << " ";  // 배열 하나씩 출력
+	}
+	std::cout << std::endl;
+}

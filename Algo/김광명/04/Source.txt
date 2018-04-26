@@ -1,0 +1,8 @@
+void Prom_4()
+{
+	Single_List Good;
+	for (int i = 1; i <= 10; ++i) {
+		Good.AddNode(i);
+	}
+	Good.PrintNodes();
+}

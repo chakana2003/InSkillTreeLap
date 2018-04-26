@@ -1,0 +1,88 @@
+Pos Dir[4];
+
+void InitDir() {
+	Dir[0].x = 0;
+	Dir[0].y = -1;
+
+	Dir[1].x = 1;
+	Dir[1].y = 0;
+
+	Dir[2].x = 0;
+	Dir[2].y = 1;
+
+	Dir[3].x = -1;
+	Dir[3].y = 0;
+}
+
+bool CanMove(const Pos& Current, Pos& NewPosition, int dir, int maze[10][10]) {
+	Pos Next;
+
+	Next.x = Current.x + Dir[dir].x;
+	Next.y = Current.y + Dir[dir].y;
+
+	if (Next.x < 0 || Next.y < 0 || Next.x > 9 || Next.y > 9) {
+		return false;
+	}
+
+	if (maze[Next.y][Next.x] == 0) {
+		NewPosition = Next;
+		return true;
+	}
+	return false;
+}
+
+void Prom_12()
+{
+	int maze[10][10] = {
+	{ 0,1,1,1,1,1,1,1,1,1 },
+	{ 0,1,1,1,0,0,0,0,0,1 },
+	{ 0,0,0,1,0,1,1,1,0,1 },
+	{ 1,1,0,1,0,1,0,1,0,1 },
+	{ 1,1,0,0,0,0,0,1,1,1 },
+	{ 1,1,1,1,0,1,0,1,1,1 },
+	{ 1,1,1,1,0,1,0,1,1,1 },
+	{ 1,1,1,1,0,0,0,0,0,1 },
+	{ 1,1,1,1,1,1,1,1,0,0 },
+	{ 1,1,1,1,1,1,1,1,1,0 }
+	};
+	std::queue<Pos> Trace;
+	InitDir();
+
+	Pos Start;
+	Start.x = 0;
+	Start.y = 0;
+
+	Trace.push(Start);
+	maze[0][0] = 100;
+	bool found = false;
+
+	while (!Trace.empty()) {
+		Start = Trace.front();
+		Trace.pop();
+		for (int i = 0; i < 4; ++i) {
+			Pos NewPosition;
+			if (CanMove(Start, NewPosition, i, maze)) {
+				maze[NewPosition.y][NewPosition.x] = maze[Start.y][Start.x] + 1;
+				if (NewPosition.x == 9 && NewPosition.y == 9) {
+					std::cout << "³ª¿Ô¶¥~!" << std::endl;
+					found = true;
+					break;
+				}
+
+				Trace.push(NewPosition);
+			}
+		}
+	}
+
+	for (int i = 0; i < 10; ++i) {
+		for (int j = 0; j < 10; ++j) {
+			if (maze[i][j] == 1) {
+				std::cout << "---";
+			}
+			else {
+				std::cout << maze[i][j];
+			}
+		}
+		std::cout << std::endl;
+	}
+}
