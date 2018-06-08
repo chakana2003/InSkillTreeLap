@@ -31,9 +31,12 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	class UItemDataTableComponent* ItemDataTable;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data", Replicated)
 	int ItemIndex;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 	int ItemCount;
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 };

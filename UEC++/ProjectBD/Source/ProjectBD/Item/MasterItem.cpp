@@ -7,6 +7,7 @@
 #include "Engine/StreamableManager.h"
 #include "Components/StaticMeshComponent.h"
 #include "Basic/MyCharacter.h"
+#include "UnrealNetwork.h"
 
 AMasterItem::AMasterItem()
 {
@@ -18,6 +19,8 @@ AMasterItem::AMasterItem()
 	Sphere->bGenerateOverlapEvents = true;
 
 	ItemDataTable = CreateDefaultSubobject<UItemDataTableComponent>(TEXT("ItemDataTable"));
+
+	bReplicates = true;
 }
 
 void AMasterItem::BeginPlay()
@@ -26,7 +29,10 @@ void AMasterItem::BeginPlay()
 
 	if (ItemDataTable && ItemDataTable->DataTable)
 	{
-		ItemIndex = FMath::RandRange(1, 6) * 10;
+		if (HasAuthority())
+		{
+			ItemIndex = FMath::RandRange(1, 6) * 10;
+		}
 		FItemDataTable Data = ItemDataTable->GetItemData(ItemIndex);
 		ItemCount = Data.ItemCount;
 
@@ -63,4 +69,11 @@ void AMasterItem::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor*
 
 		}
 	}
+}
+
+void AMasterItem::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AMasterItem, ItemIndex);
 }

@@ -1,12 +1,12 @@
-ï»¿// Fill out your copyright notice in the Description page of Project Settings.
+// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "MyCharacter.h"
+#include "BattleCharacter.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/InputComponent.h"
 #include "Camera/CameraComponent.h"
 #include "ConstructorHelpers.h"
 #include "Components/SkeletalMeshComponent.h"
-#include "WeaponComponent.h"
+#include "Basic/WeaponComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
@@ -15,10 +15,10 @@
 #include "Engine/StaticMesh.h"
 #include "TimerManager.h"
 #include "Basic/ShootCameraShake.h"
-#include "BulletDamageType.h"
+#include "Basic/BulletDamageType.h"
 #include "Components/CapsuleComponent.h"
 #include "Animation/AnimMontage.h"
-#include "Basic/BasicPC.h"
+#include "Battle/BattlePC.h"
 #include "Components/PawnNoiseEmitterComponent.h"
 #include "Item/MasterItem.h"
 #include "UI/ItemTooltipWidgetBase.h"
@@ -28,37 +28,37 @@
 #include "UI/InventoryWidgetBase.h"
 
 // Sets default values
-AMyCharacter::AMyCharacter()
+ABattleCharacter::ABattleCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	//ì¹´ë©”ë¼ ìŠ¤í”„ë§ì•” ìƒì„±
+	//Ä«¸Ş¶ó ½ºÇÁ¸µ¾Ï »ı¼º
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->SetupAttachment(RootComponent);
-	//ìŠ¤í”„ë§ ì•” ìœ„ì¹˜ ì¡°ì •
+	//½ºÇÁ¸µ ¾Ï À§Ä¡ Á¶Á¤
 	SpringArm->SetRelativeLocation(FVector(0, 30, 70));
-	//ìŠ¤í”„ë§ ì•” ê¸¸ì´ ì¡°ì •
+	//½ºÇÁ¸µ ¾Ï ±æÀÌ Á¶Á¤
 	SpringArm->TargetArmLength = 150.0f;
 
-	//ì¹´ë©”ë¼ ìƒì„±
+	//Ä«¸Ş¶ó »ı¼º
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
 
-	//ë¬´ê¸° ë©”ì‹œ ì»´í¬ë„ŒíŠ¸ ìƒì„±
+	//¹«±â ¸Ş½Ã ÄÄÆ÷³ÍÆ® »ı¼º
 	Weapon = CreateDefaultSubobject<UWeaponComponent>(TEXT("Weapon"));
-	//ì†Œì¼“ì— ì—°ê²° í•˜ê¸°
+	//¼ÒÄÏ¿¡ ¿¬°á ÇÏ±â
 	Weapon->SetupAttachment(GetMesh(), TEXT("RHandWeapon"));
-	//ê¸°ë³¸ ë©”ì‹œ ì´ë™
+	//±âº» ¸Ş½Ã ÀÌµ¿
 	GetMesh()->SetRelativeLocationAndRotation(FVector(0, 0, -88.0f), FRotator(0, -90, 0));
 
-	//ìŠ¤í”„ë§ì•”ì„ ì ˆëŒ€ íšŒì „ìœ¼ë¡œ íšŒì „ ì‹œí‚´
+	//½ºÇÁ¸µ¾ÏÀ» Àı´ë È¸ÀüÀ¸·Î È¸Àü ½ÃÅ´
 	SpringArm->bUsePawnControlRotation = true;
 
-	//ì• ë‹ˆë©”ì´ì…˜ì„ ì• ë‹ˆë©”ì´ì…˜ ë¸”ë£¨í”„ë¦°íŠ¸ë¥¼ ì‚¬ìš©í•˜ëŠ”ê²ƒìœ¼ë¡œ ì„¤ì •
+	//¾Ö´Ï¸ŞÀÌ¼ÇÀ» ¾Ö´Ï¸ŞÀÌ¼Ç ºí·çÇÁ¸°Æ®¸¦ »ç¿ëÇÏ´Â°ÍÀ¸·Î ¼³Á¤
 	GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
 
-	//ì• ë‹ˆë©”ì´ì…˜ ë¸”ë£¨í”„ë¦°íŠ¸ í´ë˜ìŠ¤ ë¡œë”©, ì• ë‹˜ ë¸”ë£¨í”„ë¦°íŠ¸ëª… ë’¤ì— _C
+	//¾Ö´Ï¸ŞÀÌ¼Ç ºí·çÇÁ¸°Æ® Å¬·¡½º ·Îµù, ¾Ö´Ô ºí·çÇÁ¸°Æ®¸í µÚ¿¡ _C
 	static ConstructorHelpers::FClassFinder<UAnimInstance> Anim_Class(TEXT("AnimBlueprint'/Game/Blueprints/Player/Animations/ABP_Male.ABP_Male_C'"));
 	if (Anim_Class.Succeeded())
 	{
@@ -110,7 +110,7 @@ AMyCharacter::AMyCharacter()
 }
 
 // Called when the game starts or when spawned
-void AMyCharacter::BeginPlay()
+void ABattleCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -120,7 +120,7 @@ void AMyCharacter::BeginPlay()
 }
 
 // Called every frame
-void AMyCharacter::Tick(float DeltaTime)
+void ABattleCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
@@ -134,41 +134,41 @@ void AMyCharacter::Tick(float DeltaTime)
 }
 
 // Called to bind functionality to input
-void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ABattleCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAxis(TEXT("Turn"), this, &AMyCharacter::Turn);
-	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &AMyCharacter::LookUp);
-	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &AMyCharacter::MoveRight);
-	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &AMyCharacter::MoveForward);
+	PlayerInputComponent->BindAxis(TEXT("Turn"), this, &ABattleCharacter::Turn);
+	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &ABattleCharacter::LookUp);
+	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &ABattleCharacter::MoveRight);
+	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &ABattleCharacter::MoveForward);
 
-	PlayerInputComponent->BindAction(TEXT("Crouch"), IE_Pressed, this, &AMyCharacter::TryCrouch);
-	PlayerInputComponent->BindAction(TEXT("Ironsight"), IE_Pressed, this, &AMyCharacter::TryIronsight);
-	PlayerInputComponent->BindAction(TEXT("Prone"), IE_Pressed, this, &AMyCharacter::TryProne);
+	PlayerInputComponent->BindAction(TEXT("Crouch"), IE_Pressed, this, &ABattleCharacter::TryCrouch);
+	PlayerInputComponent->BindAction(TEXT("Ironsight"), IE_Pressed, this, &ABattleCharacter::TryIronsight);
+	PlayerInputComponent->BindAction(TEXT("Prone"), IE_Pressed, this, &ABattleCharacter::TryProne);
 
-	PlayerInputComponent->BindAction(TEXT("Sprint"), IE_Pressed, this, &AMyCharacter::Sprint);
-	PlayerInputComponent->BindAction(TEXT("Sprint"), IE_Released, this, &AMyCharacter::UnSprint);
+	PlayerInputComponent->BindAction(TEXT("Sprint"), IE_Pressed, this, &ABattleCharacter::Sprint);
+	PlayerInputComponent->BindAction(TEXT("Sprint"), IE_Released, this, &ABattleCharacter::UnSprint);
 
-	PlayerInputComponent->BindAction(TEXT("LookAround"), IE_Pressed, this, &AMyCharacter::LookAround);
-	PlayerInputComponent->BindAction(TEXT("LookAround"), IE_Released, this, &AMyCharacter::UndoLookAround);
+	PlayerInputComponent->BindAction(TEXT("LookAround"), IE_Pressed, this, &ABattleCharacter::LookAround);
+	PlayerInputComponent->BindAction(TEXT("LookAround"), IE_Released, this, &ABattleCharacter::UndoLookAround);
 
 
-	PlayerInputComponent->BindAction(TEXT("Fire"), IE_Pressed, this, &AMyCharacter::StartFire);
-	PlayerInputComponent->BindAction(TEXT("Fire"), IE_Released, this, &AMyCharacter::StopFire);
+	PlayerInputComponent->BindAction(TEXT("Fire"), IE_Pressed, this, &ABattleCharacter::StartFire);
+	PlayerInputComponent->BindAction(TEXT("Fire"), IE_Released, this, &ABattleCharacter::StopFire);
 
-	PlayerInputComponent->BindAction(TEXT("ItemGet"), IE_Released, this, &AMyCharacter::ItemGet);
-	PlayerInputComponent->BindAction(TEXT("Inventory"), IE_Released, this, &AMyCharacter::Inventory);
+	PlayerInputComponent->BindAction(TEXT("ItemGet"), IE_Released, this, &ABattleCharacter::ItemGet);
+	PlayerInputComponent->BindAction(TEXT("Inventory"), IE_Released, this, &ABattleCharacter::Inventory);
 
 }
 
-void AMyCharacter::ItemGet()
+void ABattleCharacter::ItemGet()
 {
 	AMasterItem* PickupItem = GetClosestItem();
 	if (PickupItem && !PickupItem->IsPendingKill())
 	{
 		RemovePickupItemList(PickupItem);
-		ABasicPC* PC = Cast<ABasicPC>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+		ABattlePC* PC = Cast<ABattlePC>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 		if (PC)
 		{
 			UItemSlotWidgetBase* Slot = PC->InventoryWidget->GetSameIDSlot(PickupItem->ItemIndex);
@@ -196,16 +196,16 @@ void AMyCharacter::ItemGet()
 	}
 }
 
-void AMyCharacter::Inventory()
+void ABattleCharacter::Inventory()
 {
-	ABasicPC* PC = Cast<ABasicPC>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	ABattlePC* PC = Cast<ABattlePC>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	if (PC)
 	{
 		PC->ToggleInventory();
 	}
 }
 
-AMasterItem* AMyCharacter::GetClosestItem()
+AMasterItem* ABattleCharacter::GetClosestItem()
 {
 	AMasterItem* ClosestItem = nullptr;
 	float Min = 9999999999.9f;
@@ -223,7 +223,7 @@ AMasterItem* AMyCharacter::GetClosestItem()
 	return ClosestItem;
 }
 
-void AMyCharacter::TryIronsight()
+void ABattleCharacter::TryIronsight()
 {
 	if (bIsSprint)
 	{
@@ -243,18 +243,18 @@ void AMyCharacter::TryIronsight()
 }
 
 
-void AMyCharacter::TryCrouch()
+void ABattleCharacter::TryCrouch()
 {
-	if (bIsProning) //ì—ë“œë¦¬ëŠ” ì¤‘ì—ëŠ” ìƒíƒœ ë³€í™” ì•ˆë¨
+	if (bIsProning) //¾şµå¸®´Â Áß¿¡´Â »óÅÂ º¯È­ ¾ÈµÊ
 	{
 		return;
 	}
 
-	if (CanCrouch() && !bIsSprint && !bIsProne) //ì„œìˆì„ë•Œ
+	if (CanCrouch() && !bIsSprint && !bIsProne) //¼­ÀÖÀ»¶§
 	{
 		Crouch();
 	}
-	else if (bIsProne) //ê¸°ì–´ ë‹¤ë‹ë•Œ
+	else if (bIsProne) //±â¾î ´Ù´Ò¶§
 	{
 		bIsProne = false;
 		Crouch();
@@ -265,7 +265,7 @@ void AMyCharacter::TryCrouch()
 	}
 }
 
-void AMyCharacter::Turn(float Value)
+void ABattleCharacter::Turn(float Value)
 {
 	if (Value != 0.0)
 	{
@@ -273,7 +273,7 @@ void AMyCharacter::Turn(float Value)
 	}
 }
 
-void AMyCharacter::LookUp(float Value)
+void ABattleCharacter::LookUp(float Value)
 {
 	if (Value != 0.0)
 	{
@@ -281,7 +281,7 @@ void AMyCharacter::LookUp(float Value)
 	}
 }
 
-void AMyCharacter::MoveRight(float Value)
+void ABattleCharacter::MoveRight(float Value)
 {
 	if (Value != 0.0 && !bIsSprint && !bIsProning)
 	{
@@ -290,7 +290,7 @@ void AMyCharacter::MoveRight(float Value)
 }
 
 
-void AMyCharacter::MoveForward(float Value)
+void ABattleCharacter::MoveForward(float Value)
 {
 	if (Value != 0.0 && !bIsProning)
 	{
@@ -298,7 +298,7 @@ void AMyCharacter::MoveForward(float Value)
 	}
 }
 
-FRotator AMyCharacter::GetAimOffset() const
+FRotator ABattleCharacter::GetAimOffset() const
 {
 	const FVector AimDirWS = GetBaseAimRotation().Vector();
 	const FVector AimDirLS = ActorToWorld().InverseTransformVectorNoScale(AimDirWS);
@@ -307,9 +307,9 @@ FRotator AMyCharacter::GetAimOffset() const
 	return AimRotLS;
 }
 
-void AMyCharacter::Sprint()
+void ABattleCharacter::Sprint()
 {
-	if (!bIsCrouched && !bIsIronsight &&  !bIsProne && !bIsProning &&
+	if (!bIsCrouched && !bIsIronsight && !bIsProne && !bIsProning &&
 		!bIsFire && GetCharacterMovement()->Velocity.Size() > 0)
 	{
 		bIsSprint = true;
@@ -317,7 +317,7 @@ void AMyCharacter::Sprint()
 	}
 }
 
-void AMyCharacter::UnSprint()
+void ABattleCharacter::UnSprint()
 {
 	if (bIsSprint)
 	{
@@ -326,7 +326,7 @@ void AMyCharacter::UnSprint()
 	}
 }
 
-void AMyCharacter::LookAround()
+void ABattleCharacter::LookAround()
 {
 	if (!bIsIronsight)
 	{
@@ -335,12 +335,12 @@ void AMyCharacter::LookAround()
 
 }
 
-void AMyCharacter::UndoLookAround()
+void ABattleCharacter::UndoLookAround()
 {
 	bUseControllerRotationYaw = true;
 }
 
-void AMyCharacter::TryProne()
+void ABattleCharacter::TryProne()
 {
 	if (bIsProning)
 	{
@@ -361,7 +361,7 @@ void AMyCharacter::TryProne()
 	}
 }
 
-void AMyCharacter::StartFire()
+void ABattleCharacter::StartFire()
 {
 	if (!bIsSprint && !bIsProning)
 	{
@@ -370,13 +370,13 @@ void AMyCharacter::StartFire()
 	}
 }
 
-void AMyCharacter::StopFire()
+void ABattleCharacter::StopFire()
 {
 	bIsFire = false;
 	//GetWorldTimerManager().ClearTimer(ShootTimeHandle);
 }
 
-void AMyCharacter::OnShot()
+void ABattleCharacter::OnShot()
 {
 	if (!bIsFire)
 	{
@@ -409,7 +409,7 @@ void AMyCharacter::OnShot()
 	IgnoreObjects.Add(this);
 
 
-	//ê´‘ì„  ì¶”ì  ì‹œì‘
+	//±¤¼± ÃßÀû ½ÃÀÛ
 	bool Result = UKismetSystemLibrary::LineTraceSingleForObjects(GetWorld(),
 		TraceStart,
 		TraceEnd,
@@ -476,11 +476,11 @@ void AMyCharacter::OnShot()
 			APawn* Pawn = Cast<APawn>(OutHit.GetActor());
 			if (Pawn)
 			{
-				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), BloodEffect, OutHit.Location,FRotator::ZeroRotator);
+				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), BloodEffect, OutHit.Location, FRotator::ZeroRotator);
 			}
 			else
 			{
-				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitEffect, OutHit.Location,					FRotator::ZeroRotator);
+				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitEffect, OutHit.Location, FRotator::ZeroRotator);
 			}
 
 			NoiseEmitter->MakeNoise(this, 1.0f, OutHit.Location);
@@ -497,11 +497,11 @@ void AMyCharacter::OnShot()
 
 	if (bIsFire)
 	{
-		GetWorldTimerManager().SetTimer(ShootTimeHandle, this, &AMyCharacter::OnShot, 0.2f);
+		GetWorldTimerManager().SetTimer(ShootTimeHandle, this, &ABattleCharacter::OnShot, 0.2f);
 	}
 }
 
-float AMyCharacter::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)
+float ABattleCharacter::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)
 {
 	if (CurrentHP <= 0)
 	{
@@ -518,7 +518,7 @@ float AMyCharacter::TakeDamage(float DamageAmount, FDamageEvent const & DamageEv
 
 		if (PointDamageEvent->HitInfo.BoneName.Compare(FName(TEXT("head"))) == 0)
 		{
-			UE_LOG(LogClass, Warning, TEXT("Head Shot") );
+			UE_LOG(LogClass, Warning, TEXT("Head Shot"));
 			CurrentHP = 0;
 		}
 		else
@@ -537,7 +537,7 @@ float AMyCharacter::TakeDamage(float DamageAmount, FDamageEvent const & DamageEv
 		CurrentHP = 0;
 		//GetMesh()->SetSimulatePhysics(true);
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		DisableInput(Cast<ABasicPC>(GetController()));
+		DisableInput(Cast<ABattlePC>(GetController()));
 
 		PlayAnimMontage(DeadAnimation);
 	}
@@ -547,7 +547,7 @@ float AMyCharacter::TakeDamage(float DamageAmount, FDamageEvent const & DamageEv
 	return DamageAmount;
 }
 
-void AMyCharacter::AddPickupItemList(AMasterItem * Item)
+void ABattleCharacter::AddPickupItemList(AMasterItem * Item)
 {
 	if (Item && !Item->IsPendingKill())
 	{
@@ -557,7 +557,7 @@ void AMyCharacter::AddPickupItemList(AMasterItem * Item)
 	ViewItemTooltip();
 }
 
-void AMyCharacter::RemovePickupItemList(AMasterItem * Item)
+void ABattleCharacter::RemovePickupItemList(AMasterItem * Item)
 {
 	if (Item)
 	{
@@ -567,9 +567,9 @@ void AMyCharacter::RemovePickupItemList(AMasterItem * Item)
 	ViewItemTooltip();
 }
 
-void AMyCharacter::ViewItemTooltip()
+void ABattleCharacter::ViewItemTooltip()
 {
-	ABasicPC* PC = Cast<ABasicPC>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	ABattlePC* PC = Cast<ABattlePC>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	if (!PC)
 	{
 		return;
@@ -583,7 +583,7 @@ void AMyCharacter::ViewItemTooltip()
 		return;
 	}
 
-	//ì ¤ ê°€ê¹Œìš´ ì•„ì´í…œ ê°€ì ¸ì˜¤ê¸°
+	//Á© °¡±î¿î ¾ÆÀÌÅÛ °¡Á®¿À±â
 	AMasterItem* ClosestItem = GetClosestItem();
 	if (ClosestItem)
 	{

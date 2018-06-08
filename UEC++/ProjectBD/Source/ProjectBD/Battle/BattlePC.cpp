@@ -1,22 +1,22 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "BasicPC.h"
+#include "BattlePC.h"
 #include "Basic/BasicPCM.h"
 #include "ConstructorHelpers.h"
 #include "UI/ItemTooltipWidgetBase.h"
 #include "UI/InventoryWidgetBase.h"
 
-ABasicPC::ABasicPC()
+ABattlePC::ABattlePC()
 {
 	PlayerCameraManagerClass = ABasicPCM::StaticClass();
 }
 
-void ABasicPC::BeginPlay()
+void ABattlePC::BeginPlay()
 {
-	SetupWidget();
+	S2C_SetupWidget();
 }
 
-void ABasicPC::SetupWidget()
+void ABattlePC::S2C_SetupWidget_Implementation()
 {
 	FStringClassReference ItemTooltipWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/UI/ItemlTooltipWidget.ItemlTooltipWidget_C'"));
 	if (UClass* MyWidgetClass = ItemTooltipWidgetClass.TryLoadClass<UUserWidget>())
@@ -35,7 +35,7 @@ void ABasicPC::SetupWidget()
 	}
 }
 
-void ABasicPC::ToggleInventory()
+void ABattlePC::ToggleInventory()
 {
 	if (InventoryWidget->GetVisibility() == ESlateVisibility::Visible)
 	{
@@ -50,3 +50,6 @@ void ABasicPC::ToggleInventory()
 		InventoryWidget->SetVisibility(ESlateVisibility::Visible);
 	}
 }
+
+
+

@@ -4,23 +4,24 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
-#include "BasicPC.generated.h"
+#include "BattlePC.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PROJECTBD_API ABasicPC : public APlayerController
+class PROJECTBD_API ABattlePC : public APlayerController
 {
 	GENERATED_BODY()
-	
 public:
-	ABasicPC();
+	ABattlePC();
 
 	virtual void BeginPlay() override;
 
-	void SetupWidget();
-	
+	UFUNCTION(Client, Reliable)
+	void S2C_SetupWidget();
+	void S2C_SetupWidget_Implementation();
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	class UItemTooltipWidgetBase* ItemTooltip;
 
