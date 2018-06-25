@@ -1,0 +1,12 @@
+ID : kimjs7784
+Password : q!w@e#r$
+Level : 19
+Strenth : 5
+Dex : 10000
+HP : 3
+SP : 77
+Mana : 3714
+Exp : 1900
+Nickname : 어그로
+Gold : 100000
+직업 : 미필

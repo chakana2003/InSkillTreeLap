@@ -1,0 +1,12 @@
+ID : cha012
+Password : rkdsoddl
+Level : 300
+Strenth : 3
+Dex : 0
+HP : 9000
+SP : 3
+Mana : 10
+Exp : 200000
+Nickname : 보조탱커
+Gold : 99999999
+직업 : 드루이드

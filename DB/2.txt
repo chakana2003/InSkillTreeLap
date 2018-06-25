@@ -1,0 +1,95 @@
+mysql> create table inventory
+    -> (idx int not null auto_increment,
+    -> user_idx int not null default '0',
+    -> name char(30) not null default '없음',
+    -> primary key(idx));
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> explain inventory;
++----------+----------+------+-----+---------+----------------+
+| Field    | Type     | Null | Key | Default | Extra          |
++----------+----------+------+-----+---------+----------------+
+| idx      | int(11)  | NO   | PRI | NULL    | auto_increment |
+| user_idx | int(11)  | NO   |     | 0       |                |
+| name     | char(30) | NO   |     | 없음    |                |
++----------+----------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> insert into inventory
+    -> (user_idx, name)
+    -> values('1','안경');
+Query OK, 1 row affected (0.09 sec)
+
+mysql> select * from inventory;
++-----+----------+------+
+| idx | user_idx | name |
++-----+----------+------+
+|   1 |        1 | 안경 |
++-----+----------+------+
+1 row in set (0.00 sec)
+
+mysql> insert into inventory
+    -> (user_idx, name)
+    -> values('3','망치');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into inventory
+    -> (user_idx, name)
+    -> values('4','담배');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into inventory
+    -> (user_idx, name)
+    -> values('4','라이터');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into inventory
+    -> (user_idx, name)
+    -> values('2','재떨이');
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into inventory
+    -> (user_idx, name)
+    -> values('3','핸드폰');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into inventory
+    -> (user_idx, name)
+    -> values('6','컴퓨터');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into inventory
+    -> (user_idx, name)
+    -> values('1','양꼬치');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into inventory
+    -> (user_idx, name)
+    -> values('3','개념');
+
+mysql> select * from user;
++-----+-----------+----------+-------+---------+-------+--------+------+--------+----------+----------+----------+
+| idx | id        | password | level | strenth | dex   | hp     | mana | exp    | nickname | gold     | jop      |
++-----+-----------+----------+-------+---------+-------+--------+------+--------+----------+----------+----------+
+|   1 | seung     | 1234     |     1 |       1 |     2 | 100000 |    0 |    100 | 탱커     |      100 | 백수     |
+|   2 | kimjs7784 | q!w@e#r$ |    19 |       5 | 10000 |      3 | 3714 |   1900 | 어그로   |   100000 | 미필     |
+|   3 | cha012    | rkdsoddl |   300 |       3 |     0 |   9000 |   10 | 200000 | 보조탱커 | 99999999 | 드루이드 |
+|   4 | nene      | 1018     |   100 |   90000 | 10000 |  19000 | 1000 |   2100 | 에이스   |        0 | 전사     |
++-----+-----------+----------+-------+---------+-------+--------+------+--------+----------+----------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select * from inventory;
++-----+----------+--------+
+| idx | user_idx | name   |
++-----+----------+--------+
+|   1 |        1 | 안경   |
+|   2 |        3 | 망치   |
+|   3 |        4 | 담배   |
+|   4 |        4 | 라이터 |
+|   5 |        2 | 재떨이 |
+|   6 |        3 | 핸드폰 |
+|   7 |        6 | 컴퓨터 |
+|   8 |        1 | 양꼬치 |
+|   9 |        3 | 개념   |
++-----+----------+--------+
+9 rows in set (0.00 sec)

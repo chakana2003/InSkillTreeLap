@@ -1,0 +1,12 @@
+ID : seung
+Password : 1234
+Level : 1
+Strenth : 1
+Dex : 2
+HP : 100000
+SP : 1
+Mana : 0
+Exp : 100
+Nickname : 탱커
+Gold : 100
+job : 백수

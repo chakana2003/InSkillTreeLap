@@ -1,0 +1,25 @@
+cd C:\Program Files\MySQL\MySQL Server 8.0\bin
+mysql -uroot -p
+show databases;
+use projectdb
+show tables;
+select * from item;
+select * from user;
+update user set level = 3 where id = 'won';
+update user set level = '2', job = '°ß½À»ý' where idx = '1';
+alter table user modify column password varchar(100) not null;
+explain user;
+alter table user drop mana;
+ alter table user add index myindex(id);
+ alter table user add index myindex2(job);
+explain user;
+alter table user drop index myindex2;
+explain user;
+show index from user;
+update user set password = sha1('1234') where idx=1;
+select * from user;
+truncate item;
+select * from item;
+show variables like 'datadir';
+mysqldump -uroot -p projectdb > C:\20180615.sql
+mysql -uroot -p -newtable < C:\20180615.sql

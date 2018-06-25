@@ -1,0 +1,12 @@
+ID : nene
+Password : 1018
+Level : 100
+Strenth : 90000
+Dex : 10000
+HP : 19000
+SP : 33
+Mana : 1000
+Exp : 2100
+Nickname : 에이스
+Gold : 0
+직업 : 전사

@@ -1,0 +1,13 @@
+{
+  "name": "server",
+  "version": "0.1.0",
+  "main": "Index.js",
+  "scripts": {
+    "start": "node ./index.js",
+    "dev" : "spervisor ./index.js"
+    "dev": "supervisor ./index.js"
+  },
+  "dependencies": {
+    "formidable": "^1.2.1"
+  }
+}

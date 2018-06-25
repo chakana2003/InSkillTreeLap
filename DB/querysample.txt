@@ -1,0 +1,36 @@
+
+select film.film_id, film.title , film_actor.actor_id, actor.first_name, actor.last_name
+from film 
+inner join film_actor on film.film_id = film_actor.film_id 
+inner join actor on actor.actor_id = film_actor.actor_id
+where film.title like 'wo%';
+
+
+
+select sakila.film.film_id, sakila.film.title from sakila.film limit 10;
+
+select film_id, title from film limit 10;
+
+
+
+film_actor, film
+
+select sakila.film.film_id, sakila.film.title from sakila.film
+join sakila.film_actor on sakila.film.film_id = sakila.film_actor.film_id
+limit 10;
+
+
+select film.film_id, film.title, film_actor.actor_id, actor.first_name, actor.last_name 
+from film
+join film_actor on film.film_id = film_actor.film_id
+join actor on film_actor.actor_id = actor.actor_id
+limit 10;
+
+
+select count(film.film_id), film.title  
+from film
+join film_actor on film.film_id = film_actor.film_id
+join actor on film_actor.actor_id = actor.actor_id
+group by film.film_id;
+
+
