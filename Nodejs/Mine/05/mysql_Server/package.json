@@ -1,0 +1,17 @@
+{
+  "name": "mysql_server",
+  "version": "1.0.0",
+  "description": "Mysql Example Server",
+  "main": "app.js",
+  "scripts": {
+    "start": "Superviser ./app.js"
+  },
+  "keywords": [],
+  "author": "KangNeng2",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "mysql": "^2.15.0"
+  }
+}

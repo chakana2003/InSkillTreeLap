@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "start": "node ./index.js"
+  },
+  "name": "server",
+  "version": "0.1.0",
+  "main": "index.js",
+  "dependencies": {
+    "formidable": "^1.2.1"
+  }
+}
